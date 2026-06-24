@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Swati! 🎂✨</title>
+  <meta name="description" content="A special birthday celebration website for Swati — June 25, 2026">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Music Audio Tag -->
+  <audio id="bgMusic" loop src="bg_music.mp3"></audio>
+
+  <!-- One continuous canvas background — no breaks -->
+  <div class="bg-canvas" id="bgCanvas"></div>
+  <div class="abstract-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
+    <div class="shape shape-7"></div>
+    <div class="shape shape-8"></div>
+  </div>
+  <div class="grain-overlay"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Global DJ Mix Button -->
+  <button id="djMixBtn" class="music-toggle-btn playing">
+    🎵 Playing Mix
+  </button>
+
+  <div class="particles" id="particles"></div>
+
+  <!-- Nav dots -->
+  <nav class="nav-dots" id="navDots">
+    <a href="#hero" class="dot active" data-section="hero" title="Home"></a>
+    <a href="#cake" class="dot" data-section="cake" title="Cake"></a>
+    <a href="#messages" class="dot" data-section="messages" title="Messages"></a>
+    <a href="#olivia" class="dot" data-section="olivia" title="Your Vibe"></a>
+    <a href="#gallery" class="dot" data-section="gallery" title="Gallery"></a>
+    <a href="#wishes" class="dot" data-section="wishes" title="Wishes"></a>
+  </nav>
+
+  <!-- Smooth progress bar at top -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ===== HERO ===== -->
+  <section class="zone" id="hero">
+    <div class="zone-inner hero-inner">
+      <div class="confetti-burst" id="confettiBurst"></div>
+      <p class="hero-date" data-motion="fade-down">June 25, 2026</p>
+      <h1 class="hero-title">
+        <span class="title-line" data-motion="fade-up" data-delay="0.15">Happy Birthday</span>
+        <span class="title-name" data-motion="scale-in" data-delay="0.4">Swati</span>
+      </h1>
+      <p class="hero-sub" data-motion="fade-up" data-delay="0.7">A day as special and beautiful as you are ✨</p>
+      <div class="scroll-hint" data-motion="fade-up" data-delay="1.1">
+        <span>Scroll to celebrate</span>
+        <div class="scroll-chevrons">
+          <svg width="24" height="24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="24" height="24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gradient blender between hero → cake -->
+  <div class="gradient-blender blend-1"></div>
+
+  <!-- ===== CAKE ===== -->
+  <section class="zone" id="cake">
+    <div class="zone-inner">
+      <h2 class="ztitle" data-motion="fade-up">Make a Wish! 🌟</h2>
+      <div class="cake-stage" data-motion="scale-in" data-delay="0.2">
+        <div class="cake cake-abstract" id="birthdayCake" title="Click to sprinkle!">
+          <div id="sprinklesLayer" class="sprinkles-layer"></div>
+          
+          <div class="candles-abstract">
+            <div class="candle-abs c-rose"><div class="flame-abs"></div><div class="wick"></div><div class="body"></div></div>
+            <div class="candle-abs c-pink"><div class="flame-abs"></div><div class="wick"></div><div class="body"></div></div>
+            <div class="candle-abs c-neutral"><div class="flame-abs"></div><div class="wick"></div><div class="body"></div></div>
+            <div class="candle-abs c-rose"><div class="flame-abs"></div><div class="wick"></div><div class="body"></div></div>
+            <div class="candle-abs c-pink"><div class="flame-abs"></div><div class="wick"></div><div class="body"></div></div>
+          </div>
+
+          <div class="tier tier-3">
+            <div class="drips drips-black">
+              <div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div>
+            </div>
+          </div>
+
+          <div class="tier tier-2">
+            <div class="drips drips-red">
+              <div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div>
+            </div>
+          </div>
+
+          <div class="tier tier-1">
+            <div class="drips drips-neon">
+              <div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div><div class="drip-abs"></div>
+            </div>
+            <div class="birthday-text-overlay">SWATI • 2026</div>
+          </div>
+
+          <div class="stand-plate"></div>
+          <div class="stand-base"></div>
+        </div>
+        <div class="scream-game-ui">
+          <p class="cake-cta" id="cakeCta">✨ Tap the cake to blow out the candles! ✨</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-2"></div>
+
+  <!-- ===== MESSAGES ===== -->
+  <section class="zone" id="messages">
+    <div class="zone-inner">
+      <h2 class="ztitle" data-motion="fade-up">For You, Swati 💌</h2>
+      <div class="msg-grid">
+        <div class="msg-card glass" data-motion="slide-left">
+          <div class="msg-icon">🌹</div>
+          <h3>You're Amazing</h3>
+          <p>Every room lights up when you walk in. Your energy, your laughter, your spirit — they're all absolutely infectious. Never stop being the incredible person you are.</p>
+        </div>
+        <div class="msg-card glass" data-motion="slide-right" data-delay="0.1">
+          <div class="msg-icon">✨</div>
+          <h3>Dream Big</h3>
+          <p>This year is YOUR year, Swati. Chase every dream with the same passion you bring to everything you do. The world is waiting for your magic — go out there and shine!</p>
+        </div>
+        <div class="msg-card glass" data-motion="slide-left" data-delay="0.2">
+          <div class="msg-icon">🎯</div>
+          <h3>Unstoppable</h3>
+          <p>Whether you're chasing your biggest dreams or conquering real-life challenges, nothing can stop you. You have the heart of a warrior and the soul of an artist.</p>
+        </div>
+        <div class="msg-card glass" data-motion="slide-right" data-delay="0.3">
+          <div class="msg-icon">💖</div>
+          <h3>Forever Grateful</h3>
+          <p>Having you in our lives is the greatest gift. Today we celebrate YOU — your kindness, your creativity, your fierce determination, and that beautiful smile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-3"></div>
+
+  <!-- ===== TOP GALLERY ===== -->
+  <section class="zone" id="topGallery">
+    <div class="zone-inner">
+      <h2 class="ztitle" data-motion="fade-up">Iconic ✨</h2>
+      <div class="photo-grid" data-motion="scale-in">
+        <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.16 AM.jpeg" alt="Memory"><div class="caption">✨</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-4"></div>
+
+  <!-- ===== BALLOON POP MINIGAME ===== -->
+  <section class="zone" id="minigame">
+    <div class="zone-inner" style="display:flex; flex-direction:column; align-items:center;">
+      <h2 class="ztitle" data-motion="fade-up">Pop the Balloons! 🎈</h2>
+      <p class="zsub" data-motion="fade-up" data-delay="0.1">Pop 15 balloons in 20 seconds to unlock a surprise!</p>
+      
+      <div class="game-board glass" id="balloonBoard" data-motion="scale-in" data-delay="0.2">
+        <div class="game-header">
+          <div class="game-score">Score: <span id="bgScore">0</span>/15</div>
+          <div class="game-time">Time: <span id="bgTime">20</span>s</div>
+        </div>
+        <div class="game-area" id="balloonArea">
+          <!-- Balloons will spawn here -->
+          <div class="start-game-overlay" id="startGameOverlay">
+            <button class="scream-btn" id="startBalloonBtn">Start Game</button>
+          </div>
+        </div>
+        <div class="game-win-overlay" id="gameWinOverlay" style="display:none;">
+          <h3 class="win-title">🎉 You did it! 🎉</h3>
+          <p class="win-msg">Swati, you're officially the champion of balloons! 🎈</p>
+          <div class="key-reward" id="balloonKeyReward" style="display:none;">
+            <span class="key-icon">🗝️</span>
+            <p>You found Key Piece 1!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-5"></div>
+
+  <!-- ===== MEMORY MATCH MINIGAME ===== -->
+  <section class="zone" id="minigame2">
+    <div class="zone-inner" style="display:flex; flex-direction:column; align-items:center;">
+      <h2 class="ztitle" data-motion="fade-up">Memory Match 🧠</h2>
+      <p class="zsub" data-motion="fade-up" data-delay="0.1">Find all the matching pairs!</p>
+      
+      <div class="game-board glass" id="memoryBoard" data-motion="scale-in" data-delay="0.2">
+        <div class="game-header">
+          <div class="game-score">Matches: <span id="mmScore">0</span>/3</div>
+        </div>
+        <div class="game-area memory-area" id="memoryArea">
+          <!-- Cards go here -->
+          <div class="start-game-overlay" id="startMemoryOverlay">
+            <button class="scream-btn" id="startMemoryBtn">Start Game</button>
+          </div>
+        </div>
+        <div class="game-win-overlay" id="memoryWinOverlay" style="display:none;">
+          <h3 class="win-title">🎉 Perfect Memory! 🎉</h3>
+          <div class="key-reward" style="display:flex;">
+            <span class="key-icon">🗝️</span>
+            <p>You found Key Piece 2!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-6"></div>
+
+  <!-- ===== CATCH THE TARGET MINIGAME ===== -->
+  <section class="zone" id="minigame3">
+    <div class="zone-inner" style="display:flex; flex-direction:column; align-items:center;">
+      <h2 class="ztitle" data-motion="fade-up">Catch the Target 🎯</h2>
+      <p class="zsub" data-motion="fade-up" data-delay="0.1">Click the moving target 5 times in 15 seconds!</p>
+      
+      <div class="game-board glass" id="targetBoard" data-motion="scale-in" data-delay="0.2">
+        <div class="game-header">
+          <div class="game-score">Caught: <span id="tgScore">0</span>/5</div>
+          <div class="game-time">Time: <span id="tgTime">15</span>s</div>
+        </div>
+        <div class="game-area" id="targetArea" style="position:relative; overflow:hidden;">
+          <div class="start-game-overlay" id="startTargetOverlay">
+            <button class="scream-btn" id="startTargetBtn">Start Game</button>
+          </div>
+        </div>
+        <div class="game-win-overlay" id="targetWinOverlay" style="display:none;">
+          <h3 class="win-title">🎉 Bullseye! 🎉</h3>
+          <div class="key-reward" style="display:flex;">
+            <span class="key-icon">🗝️</span>
+            <p>You found Key Piece 3!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-blender blend-7"></div>
+
+  <!-- ===== SECRET VAULT / PINATA ===== -->
+  <section class="zone" id="secretVault">
+    <div class="zone-inner" style="display:flex; flex-direction:column; align-items:center;">
+      <h2 class="ztitle" data-motion="fade-up">The Secret Vault 🔐</h2>
+      <p class="zsub" id="vaultMessage" data-motion="fade-up" data-delay="0.1">Collect all 3 key pieces from the games above to unlock...</p>
+      
+      <div class="vault-keys-container" data-motion="scale-in" data-delay="0.2">
+        <div class="vault-key-slot" id="vk1">1</div>
+        <div class="vault-key-slot" id="vk2">2</div>
+        <div class="vault-key-slot" id="vk3">3</div>
+      </div>
+
+      <div class="forge-anim" id="forgeAnim" style="display:none;">
+        <div class="vault-key-wrapper" id="vaultKeyWrapper">
+          <span class="full-key">🗝️</span>
+        </div>
+        <p class="forge-text">Key Forged! Unlocking Vault...</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Everything here is unlocked by the Vault -->
+  <div id="lockedContent" style="display:none; flex-direction:column; align-items:center; width:100%;">
+    
+    <div class="pinata-box glass" id="pinataBox">
+      <h3>The Birthday Piñata! 🪅</h3>
+      <p>Beat the piñata to reveal your final gift!</p>
+      <button class="scream-btn" id="grabBatBtn">Grab the Bat 🏏</button>
+      
+      <div class="pinata-health-bar" id="pinataHealthBar" style="display:none;">
+        <div class="pinata-health-fill" id="pinataHealthFill"></div>
+      </div>
+
+      <div class="pinata-container" id="pinataContainer">
+        <div class="pinata-visual" id="pinataVisual">🪅</div>
+        <div class="pinata-notes" id="pinataNotes" style="display:none;">
+          <!-- Notes fall here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div class="note-modal" id="noteModal" style="display:none;">
+      <div class="note-modal-content glass">
+        <p>well there is nothing in here... cuz the gift is on the way!!!</p>
+        <button id="closeNoteBtn" class="scream-btn">Okay! ❤️</button>
+      </div>
+    </div>
+
+    <div class="gradient-blender blend-8"></div>
+
+  <!-- ===== GALLERY ===== -->
+  <section class="zone" id="gallery">
+    <div class="zone-inner" style="overflow:hidden; display:flex; flex-direction:column; align-items:center;">
+      <h2 class="ztitle" data-motion="fade-up">Memories with You 📸</h2>
+      
+      <div class="carousel-container">
+        <div class="carousel-3d">
+          <div class="carousel-item">
+            <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.14 AM.jpeg" alt="Memory"><div class="caption">🌟</div></div>
+          </div>
+          <div class="carousel-item">
+            <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.14 AM (1).jpeg" alt="Memory"><div class="caption">💫</div></div>
+          </div>
+          <div class="carousel-item">
+            <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.14 AM (2).jpeg" alt="Memory"><div class="caption">🦋</div></div>
+          </div>
+          <div class="carousel-item">
+            <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.15 AM (1).jpeg" alt="Memory"><div class="caption">💖</div></div>
+          </div>
+          <div class="carousel-item">
+            <div class="polaroid"><img src="WhatsApp Image 2026-06-25 at 3.47.15 AM.jpeg" alt="Memory"><div class="caption">🌹</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FINAL WISHES ===== -->
+  <section class="zone" id="wishes">
+    <div class="zone-inner wishes-inner">
+      <div class="wish-box glass" data-motion="scale-in">
+        <div class="wish-sparkles">
+          <span class="sp">✦</span><span class="sp">✧</span><span class="sp">✦</span><span class="sp">✧</span><span class="sp">✦</span>
+        </div>
+        <h2 class="wish-heading">Happy Birthday, Swati! 🎂</h2>
+        <div class="wish-body">
+          <p>On this special day, I just want you to know — you are one of the most incredible, talented, and beautiful souls I've ever known.</p>
+          <p>Whether you're creating abstract art masterpieces or chasing your biggest dreams, you bring <strong>passion and fire</strong> to everything you do.</p>
+          <p>Here's to another year of being absolutely, unapologetically, <em>brutally</em> amazing.</p>
+          <p class="wish-sign">With all the love in the world,<br><span class="heart-beat">❤️</span></p>
+          <div style="margin-top: 30px; font-family: var(--ff-s); font-size: 0.9rem; color: var(--pink-l); opacity: 0.8;">
+            <p>Celebrating</p>
+            <p>Your Special Day</p>
+            <p>June 25, 2026</p>
+          </div>
+        </div>
+      </div>
+      <div class="floating-hearts" id="floatingHearts"></div>
+    </div>
+  </section>
+
+  <!-- Music toggle -->
+  <button class="music-btn" id="musicToggle" aria-label="Toggle music"><span class="music-ico">🎵</span></button>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
