@@ -260,11 +260,17 @@ function unlockVault() {
     if (vaultKeyWrapper) vaultKeyWrapper.classList.add("forged");
     
     setTimeout(() => {
-      const pinataBox = document.getElementById("pinataBox");
-      if (pinataBox) pinataBox.style.display = "block";
-      // Auto-scroll to vault
-      const secretVault = document.getElementById("secretVault");
-      if (secretVault) secretVault.scrollIntoView({ behavior: 'smooth' });
+      // Hide the slots/vault visual structure if desired, or keep it.
+      // Reveal all locked content (Piñata, Memories Carousel, Wishes)
+      const lockedContent = document.getElementById("lockedContent");
+      if (lockedContent) {
+        lockedContent.style.display = "flex";
+      }
+      
+      // Auto-scroll to lockedContent
+      if (lockedContent) {
+        lockedContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }, 1500);
   }, 1500);
 }
@@ -809,26 +815,6 @@ function handleTargetClick() {
     awardKeyPiece();
   } else {
     moveTarget();
-  }
-}
-
-function checkVaultUnlock() {
-  if (keysCollected.every(k => k === true)) {
-    // Reveal forge animation
-    vaultKeySlots.forEach(s => s.style.display = "none");
-    forgeAnim.style.display = "block";
-    SoundFX.playFanfare();
-    SoundFX.playDJRiser();
-    setTimeout(() => {
-      forgeAnim.style.display = "none";
-      const lockedContent = document.getElementById("lockedContent");
-      if (lockedContent) {
-        lockedContent.style.display = "flex";
-        setTimeout(() => {
-          lockedContent.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 500);
-      }
-    }, 3000);
   }
 }
 
