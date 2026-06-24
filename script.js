@@ -50,27 +50,55 @@ const motionReady = import("https://cdn.jsdelivr.net/npm/motion@11.18.0/+esm")
 })();
 
 // ──────────────────────────────────────────────
-// 2.  CONFETTI BURST (on hero load)
+// 2.  CONFETTI BURST (on hero load) & CONTINUOUS SHOWER
 // ──────────────────────────────────────────────
 (function confetti() {
   const burst = document.getElementById("confettiBurst");
-  const colors = ["#e63946", "#ff6b9d", "#ff9ec5", "#ffd700", "#fff", "#c1121f"];
-  for (let i = 0; i < 60; i++) {
+  const colors = ["#e63946", "#ff6b9d", "#ff9ec5", "#ffd700", "#fff", "#c1121f", "#bae6fd", "#fed7aa"];
+  for (let i = 0; i < 150; i++) {
     const c = document.createElement("div");
     c.className = "confetti-piece";
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.random() * 350 + 100;
+    const dist = Math.random() * 450 + 100;
     c.style.cssText = `
       --x:${Math.cos(angle) * dist}px;
       --y:${Math.sin(angle) * dist}px;
-      width:${Math.random() * 8 + 4}px;
-      height:${Math.random() * 8 + 4}px;
+      width:${Math.random() * 10 + 4}px;
+      height:${Math.random() * 10 + 4}px;
       background:${colors[Math.floor(Math.random() * colors.length)]};
       border-radius:${Math.random() > 0.5 ? "50%" : "2px"};
-      animation-delay:${Math.random() * 0.6}s;
+      animation-delay:${Math.random() * 0.8}s;
     `;
     burst.appendChild(c);
   }
+})();
+
+// Continuous background confetti shower
+(function continuousConfetti() {
+  const colors = ["#e63946", "#ff6b9d", "#ff9ec5", "#ffd700", "#fff", "#c1121f", "#a7f3d0", "#bae6fd"];
+  setInterval(() => {
+    if (document.hidden) return;
+    const c = document.createElement("div");
+    c.className = "confetti-shower-piece";
+    const size = Math.random() * 8 + 4;
+    const startX = Math.random() * 100;
+    const duration = Math.random() * 5 + 5; // 5s to 10s
+    c.style.cssText = `
+      position: fixed;
+      top: -10px;
+      left: ${startX}vw;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: ${Math.random() > 0.5 ? "50%" : "2px"};
+      opacity: ${Math.random() * 0.6 + 0.3};
+      z-index: -1;
+      pointer-events: none;
+      animation: confettiFall ${duration}s linear forwards;
+    `;
+    document.body.appendChild(c);
+    c.addEventListener("animationend", () => c.remove());
+  }, 250); // Spawns a piece every 250ms
 })();
 
 // ──────────────────────────────────────────────
@@ -283,7 +311,9 @@ const playlist = [
   "Banjaare - Bairan (Lyrics) - 7clouds (youtube).mp3"
 ];
 
+let songTimes = [0, 0];
 let currentIndex = 0;
+
 let audioA = new Audio(playlist[0]);
 let audioB = new Audio(playlist[1]);
 
@@ -291,22 +321,27 @@ audioA.volume = 1;
 audioB.volume = 0;
 
 let isPlaying = false;
+let djInteracted = false;
+let segmentPlayTime = 0;
+let crossfadeInProgress = false;
+
 const djMixBtn = document.getElementById("djMixBtn");
+const musicToggleBtn = document.getElementById("musicToggle");
 
 function playDJMix() {
   if (isPlaying) {
     audioA.pause();
-    audioB.pause();
-    djMixBtn.textContent = "🎵 Play Mix";
-    djMixBtn.classList.remove("playing");
+    if (audioB) audioB.pause();
+    updateUIPlayState(false);
     isPlaying = false;
     return;
   }
+  
+  audioA.currentTime = songTimes[currentIndex];
   let playPromise = audioA.play();
   if (playPromise !== undefined) {
     playPromise.then(() => {
-      djMixBtn.textContent = "🔊 Playing Mix";
-      djMixBtn.classList.add("playing");
+      updateUIPlayState(true);
       isPlaying = true;
       djInteracted = true;
     }).catch(e => {
@@ -316,19 +351,41 @@ function playDJMix() {
   }
 }
 
-// Try to autoplay on load (might be blocked by browser)
+function updateUIPlayState(playing) {
+  if (djMixBtn) {
+    if (playing) {
+      djMixBtn.textContent = "🔊 Playing Mix";
+      djMixBtn.classList.add("playing");
+    } else {
+      djMixBtn.textContent = "🎵 Play Mix";
+      djMixBtn.classList.remove("playing");
+    }
+  }
+  if (musicToggleBtn) {
+    if (playing) {
+      musicToggleBtn.classList.add("playing");
+      musicToggleBtn.querySelector(".music-ico").textContent = "🔊";
+    } else {
+      musicToggleBtn.classList.remove("playing");
+      musicToggleBtn.querySelector(".music-ico").textContent = "🎵";
+    }
+  }
+}
+
+// Try to autoplay on load
 window.addEventListener("DOMContentLoaded", () => {
   playDJMix();
 });
 
-// First click autoplay
-let djInteracted = false;
-document.body.addEventListener("click", () => {
-  if (!djInteracted) {
-    playDJMix();
-    djInteracted = true;
-  }
-}, { once: true });
+// User interactions to bypass browser autoplay policy
+["click", "scroll", "touchstart"].forEach(evt => {
+  document.body.addEventListener(evt, () => {
+    if (!djInteracted) {
+      playDJMix();
+      djInteracted = true;
+    }
+  }, { once: true });
+});
 
 if (djMixBtn) {
   djMixBtn.addEventListener("click", (e) => {
@@ -337,40 +394,75 @@ if (djMixBtn) {
     playDJMix();
   });
 }
+if (musicToggleBtn) {
+  musicToggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    djInteracted = true;
+    playDJMix();
+  });
+}
 
-// Check time to trigger crossfade (after 35 seconds of playback)
+// Interval to monitor play time and handle crossfading after 40 seconds
 setInterval(() => {
-  if (isPlaying && audioA.currentTime >= 35 && audioB.paused) {
-    audioB.play();
-    SoundFX.playDJRiser();
+  if (!isPlaying || crossfadeInProgress) return;
+  
+  // Save current playback time
+  songTimes[currentIndex] = audioA.currentTime;
+  
+  segmentPlayTime += 0.5; // check runs every 500ms
+  
+  if (segmentPlayTime >= 40) {
+    crossfadeInProgress = true;
+    segmentPlayTime = 0;
     
-    // Fade out audioA, fade in audioB over 3 seconds
-    let fadeSteps = 30;
-    let fadeInt = setInterval(() => {
-      try {
-        if (audioA.volume >= 0.05) audioA.volume -= 0.033;
-        if (audioB.volume <= 0.95) audioB.volume += 0.033;
-      } catch(e){}
-      
-      fadeSteps--;
-      if (fadeSteps <= 0) {
-        clearInterval(fadeInt);
-        audioA.pause();
-        audioA.volume = 0;
-        audioB.volume = 1;
+    let nextIndex = (currentIndex + 1) % playlist.length;
+    
+    // Prep audioB
+    audioB.src = playlist[nextIndex];
+    audioB.currentTime = songTimes[nextIndex];
+    audioB.volume = 0;
+    
+    let playPromise = audioB.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        SoundFX.playDJRiser();
         
-        // Swap players and prep the next song
-        currentIndex = (currentIndex + 1) % playlist.length;
-        let nextIndex = (currentIndex + 1) % playlist.length;
-        
-        let temp = audioA;
-        audioA = audioB;
-        audioB = temp;
-        
-        audioB.src = playlist[nextIndex];
-        audioB.currentTime = 0;
-      }
-    }, 100);
+        let fadeSteps = 30;
+        let fadeInt = setInterval(() => {
+          if (!isPlaying) {
+            clearInterval(fadeInt);
+            crossfadeInProgress = false;
+            return;
+          }
+          
+          try {
+            if (audioA.volume >= 0.035) audioA.volume -= 0.033;
+            if (audioB.volume <= 0.965) audioB.volume += 0.033;
+          } catch(e) {}
+          
+          fadeSteps--;
+          if (fadeSteps <= 0) {
+            clearInterval(fadeInt);
+            audioA.pause();
+            audioA.volume = 0;
+            audioB.volume = 1;
+            
+            // Swap players so audioA is always active
+            let temp = audioA;
+            audioA = audioB;
+            audioB = temp;
+            
+            currentIndex = nextIndex;
+            crossfadeInProgress = false;
+          }
+        }, 100);
+      }).catch(e => {
+        console.error("Crossfade play blocked:", e);
+        crossfadeInProgress = false;
+      });
+    } else {
+      crossfadeInProgress = false;
+    }
   }
 }, 500);
 
@@ -912,6 +1004,91 @@ if (closeNoteBtn) {
     noteModal.style.display = "none";
   });
 }
+
+// ──────────────────────────────────────────────
+// DYNAMIC FLYING BUTTERFLIES
+// ──────────────────────────────────────────────
+(function initButterflies() {
+  const butterflyColors = [
+    "rgba(251, 113, 133, 0.75)", // pink
+    "rgba(191, 219, 254, 0.75)", // blue
+    "rgba(233, 213, 255, 0.75)", // purple
+    "rgba(254, 240, 138, 0.75)", // yellow
+    "rgba(187, 247, 208, 0.75)"  // green
+  ];
+
+  function spawnButterfly() {
+    if (document.hidden) return;
+    
+    const container = document.createElement("div");
+    container.className = "butterfly-container";
+    
+    const wingL = document.createElement("div");
+    wingL.className = "butterfly-wing butterfly-wing-left";
+    const wingR = document.createElement("div");
+    wingR.className = "butterfly-wing butterfly-wing-right";
+    const body = document.createElement("div");
+    body.className = "butterfly-body";
+    
+    const wingColor = butterflyColors[Math.floor(Math.random() * butterflyColors.length)];
+    wingL.style.background = wingColor;
+    wingR.style.background = wingColor;
+    
+    container.appendChild(wingL);
+    container.appendChild(wingR);
+    container.appendChild(body);
+    
+    const startFromLeft = Math.random() > 0.5;
+    const startY = Math.random() * 80 + 10;
+    const endY = Math.random() * 80 + 10;
+    
+    container.style.top = `${startY}vh`;
+    container.style.left = startFromLeft ? "-50px" : "calc(100vw + 10px)";
+    
+    const scale = Math.random() * 0.4 + 0.6;
+    
+    document.body.appendChild(container);
+    
+    const startTime = performance.now();
+    const duration = Math.random() * 5000 + 8000;
+    
+    function animateFlight(now) {
+      const elapsed = now - startTime;
+      const progress = elapsed / duration;
+      
+      if (progress >= 1) {
+        container.remove();
+        return;
+      }
+      
+      let currentX;
+      if (startFromLeft) {
+        currentX = -50 + (window.innerWidth + 100) * progress;
+      } else {
+        currentX = (window.innerWidth + 50) - (window.innerWidth + 100) * progress;
+      }
+      
+      const driftY = startY + (endY - startY) * progress;
+      const flutterY = Math.sin(progress * Math.PI * 14) * 35;
+      const currentY = driftY + (flutterY / window.innerHeight * 100);
+      
+      const tilt = Math.cos(progress * Math.PI * 14) * 12;
+      
+      container.style.left = `${currentX}px`;
+      container.style.top = `${currentY}vh`;
+      container.style.transform = `scale(${scale}) rotate(${tilt}deg)`;
+      
+      requestAnimationFrame(animateFlight);
+    }
+    
+    requestAnimationFrame(animateFlight);
+  }
+
+  for (let i = 0; i < 3; i++) {
+    setTimeout(spawnButterfly, Math.random() * 5000);
+  }
+  setInterval(spawnButterfly, 6000);
+})();
 
 console.log("🎂 Happy Birthday Swati! Full site & games loaded.");
 
