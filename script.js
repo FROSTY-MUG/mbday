@@ -344,6 +344,7 @@ function playDJMix() {
       updateUIPlayState(true);
       isPlaying = true;
       djInteracted = true;
+      removeInteractionListeners();
     }).catch(e => {
       console.log("Autoplay blocked:", e);
       isPlaying = false;
@@ -372,19 +373,31 @@ function updateUIPlayState(playing) {
   }
 }
 
+// User interactions to bypass browser autoplay policy
+function handleUserGesture() {
+  if (!isPlaying && !djInteracted) {
+    playDJMix();
+  }
+}
+
+function addInteractionListeners() {
+  ["click", "touchstart", "keydown", "mousedown"].forEach(evt => {
+    window.addEventListener(evt, handleUserGesture, { passive: true });
+  });
+}
+
+function removeInteractionListeners() {
+  ["click", "touchstart", "keydown", "mousedown"].forEach(evt => {
+    window.removeEventListener(evt, handleUserGesture);
+  });
+}
+
 // Try to autoplay on load
 window.addEventListener("DOMContentLoaded", () => {
   playDJMix();
-});
-
-// User interactions to bypass browser autoplay policy
-["click", "scroll", "touchstart"].forEach(evt => {
-  window.addEventListener(evt, () => {
-    if (!djInteracted) {
-      playDJMix();
-      djInteracted = true;
-    }
-  }, { once: true });
+  if (!isPlaying) {
+    addInteractionListeners();
+  }
 });
 
 if (djMixBtn) {
