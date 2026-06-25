@@ -379,7 +379,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // User interactions to bypass browser autoplay policy
 ["click", "scroll", "touchstart"].forEach(evt => {
-  document.body.addEventListener(evt, () => {
+  window.addEventListener(evt, () => {
     if (!djInteracted) {
       playDJMix();
       djInteracted = true;
